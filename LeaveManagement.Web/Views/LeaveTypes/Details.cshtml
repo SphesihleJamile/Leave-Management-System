@@ -25,6 +25,10 @@
 </div>
 <br />
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">Edit</a> &nbsp;
-    <a asp-action="Index" class="btn btn-dark">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-success">
+        <img src="~/lib/bootstrap-icons/icons/pen.svg" /> &nbsp; Edit
+    </a> &nbsp;
+    <a asp-action="Index" class="btn btn-warning">
+        <img src="~/lib/bootstrap-icons/icons/arrow-left-circle.svg" /> &nbsp; Back to List
+    </a>
 </div>

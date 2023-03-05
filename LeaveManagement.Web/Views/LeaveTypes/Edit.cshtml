@@ -24,8 +24,10 @@
             <br />
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <input type="submit" value="Save Changes" class="btn btn-warning" /> &nbsp;
-                <a asp-action="Index" class="btn btn-dark">Back to List</a>
+                <input type="submit" value="Save Changes" class="btn btn-success" /> &nbsp;
+                <a asp-action="Index" class="btn btn-warning">
+                    <img src="~/lib/bootstrap-icons/icons/arrow-left-circle.svg" /> &nbsp; Back to List
+                </a>
             </div>
         </form>
     </div>
