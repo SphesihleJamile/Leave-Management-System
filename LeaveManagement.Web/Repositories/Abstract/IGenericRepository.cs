@@ -1,4 +1,4 @@
-﻿namespace LeaveManagement.Web.Repositories
+﻿namespace LeaveManagement.Web.Repositories.Abstract
 {
     public interface IGenericRepository<T> where T : class
     {
