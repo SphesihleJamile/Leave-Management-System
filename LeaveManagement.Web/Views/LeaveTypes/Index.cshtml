@@ -33,6 +33,9 @@
                 @Html.DisplayFor(modelItem => item.DefaultDays)
             </td>
             <td>
+                <button data-id="@item.Id" class="btn btn-primary allocateBtn" type="button">
+                     &nbsp; Allocate Leave
+                </button>
                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
                         <img src="~/lib/bootstrap-icons/icons/pen.svg" /> &nbsp; Edit
                 </a> 
@@ -51,6 +54,10 @@
 
 @* By default, forms have a method of post e.g. method="post" *@
 <form id="deleteFrom" asp-action="Delete">
+    <input type="hidden" id="leaveTypeId" name="Id" />
+</form>
+
+<form id="allocationFrom" asp-action="AllocateLeave">
     <input type="hidden" id="leaveTypeId" name="Id" />
 </form>
 
@@ -74,6 +81,23 @@
                         var id = btn.data("id");
                         $('#leaveTypeId').val(id);
                         $('#deleteFrom').submit();
+                    }
+                });
+            });
+
+            $('.allocateBtn').click(function(e){
+                swal({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to allocate this leave to all employees?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if(confirm){
+                        var btn = $(this);
+                        var id = btn.data("id");
+                        $('#leaveTypeId').val(id);
+                        $('#allocationFrom').submit();
                     }
                 });
             });
