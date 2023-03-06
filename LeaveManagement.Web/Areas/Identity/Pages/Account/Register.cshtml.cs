@@ -90,11 +90,11 @@ namespace LeaveManagement.Web.Areas.Identity.Pages.Account
 
             [DataType(DataType.Date)]
             [Display(Name = "Date Of Birth")]
-            public DateTime DateOfBirth { get; set; }
+            public DateTime? DateOfBirth { get; set; }
 
             [DataType(DataType.Date)]
             [Display(Name = "Date Joined")]
-            public DateTime DateJoined { get; set; }
+            public DateTime? DateJoined { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -142,8 +142,8 @@ namespace LeaveManagement.Web.Areas.Identity.Pages.Account
                 //set all the other user details
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                user.DateJoined = Input.DateJoined;
-                user.DateOfBirth = Input.DateOfBirth;
+                user.DateJoined = Input.DateJoined ?? default;
+                user.DateOfBirth = Input.DateOfBirth ?? default;
 
                 //we wil then use the UserManage object to create the user. This is also where we have to input the password, as we do not input it directly
                 //we do not input the password directly because the password will be hashed by the CreateAsync() method in the UserManager passwordd
