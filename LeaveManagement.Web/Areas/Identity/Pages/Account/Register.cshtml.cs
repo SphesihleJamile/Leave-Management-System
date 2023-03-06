@@ -154,6 +154,8 @@ namespace LeaveManagement.Web.Areas.Identity.Pages.Account
                 {
                     //we will log that a new user has been created
                     _logger.LogInformation("User created a new account with password.");
+                    //Assign the user a role after registration
+                    await _userManager.AddToRoleAsync(user, "User");
 
                     //Get the Id of the user using the UserManager
                     var userId = await _userManager.GetUserIdAsync(user);
