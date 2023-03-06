@@ -18,12 +18,11 @@ namespace LeaveManagement.Web.Configurations.Entities
                 },
                 new IdentityRole
                 {
-                    Id = "f9b7e84-998e-487e-cb54-3b8b1368d5d8",
+                    Id = "f9b7e84-998e-487e-cb54-3b8b1368d5d8a",
                     Name = "User",
                     NormalizedName = "USER",
                 }
             );
-            throw new NotImplementedException();
         }
     }
 }

@@ -16,6 +16,8 @@ namespace LeaveManagement.Web.Data
             base.OnModelCreating(builder);
             //setup configuration for our role
             builder.ApplyConfiguration(new RoleSeedConfiguration());
+            builder.ApplyConfiguration(new UserSeedConfiguration());
+            builder.ApplyConfiguration(new UserRoleSeedConfiguration());
         }
 
         public DbSet<LeaveType> LeaveTypes { get; set; }
