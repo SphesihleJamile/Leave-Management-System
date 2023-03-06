@@ -1,3 +1,4 @@
+global using LeaveManagement.Web.Constants;
 using LeaveManagement.Web.Configurations;
 using LeaveManagement.Web.Data;
 using LeaveManagement.Web.Repositories.Abstract;

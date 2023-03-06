@@ -13,14 +13,14 @@ namespace LeaveManagement.Web.Configurations.Entities
                 new IdentityRole
                 {
                     Id = "e19a7d84-998d-487d-ba54-3a8a1368c5c8",
-                    Name = "Administrator",
-                    NormalizedName = "ADMINISTRATOR",
+                    Name = Roles.Administrator,
+                    NormalizedName = Roles.Administrator.ToUpper()
                 },
                 new IdentityRole
                 {
                     Id = "f9b7e84-998e-487e-cb54-3b8b1368d5d8a",
-                    Name = "User",
-                    NormalizedName = "USER",
+                    Name = Roles.User,
+                    NormalizedName = Roles.User.ToUpper()
                 }
             );
         }
