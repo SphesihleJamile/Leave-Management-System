@@ -13,14 +13,17 @@ namespace LeaveManagement.Web.Controllers
         private readonly UserManager<Employee> _userManager;
         private readonly IMapper _mapper;
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
+        private readonly ILeaveTypeRepository _leaveTypeRepository;
 
         public EmployeesController(UserManager<Employee> userManager, 
                                     IMapper mapper,
-                                    ILeaveAllocationRepository leaveAllocationRepository)
+                                    ILeaveAllocationRepository leaveAllocationRepository,
+                                    ILeaveTypeRepository leaveTypeRepository)
         {
             this._userManager = userManager;
             this._mapper = mapper;
             this._leaveAllocationRepository = leaveAllocationRepository;
+            this._leaveTypeRepository = leaveTypeRepository;
         }
 
         // GET: EmployeesController
@@ -59,25 +62,42 @@ namespace LeaveManagement.Web.Controllers
             }
         }
 
-        // GET: EmployeesController/Edit/5
-        public ActionResult Edit(int id)
+        // GET: EmployeesController/EditAllocation/5
+        public async Task<IActionResult> EditAllocation(int id)
         {
-            return View();
+            var model = await _leaveAllocationRepository.GetEmployeeAllocation(id);
+            if (model == null)
+                return NotFound();
+            return View(model);
         }
 
-        // POST: EmployeesController/Edit/5
+        // POST: EmployeesController/EditAllocation/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> EditAllocation(int id, LeaveAllocationEditVM model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid)
+                {
+                    var leaveAllocation = await _leaveAllocationRepository.GetAsync(int.Parse(model.Id));
+                    if(leaveAllocation == null)
+                        return NotFound();
+                    leaveAllocation.Period = model.Period;
+                    leaveAllocation.NumberOfDays = model.NumberOfDays;
+                    await _leaveAllocationRepository.UpdateAsync(leaveAllocation);
+                    return RedirectToAction(nameof(ViewAllocations), new { id = model.EmployeeId});
+                }
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                ModelState.AddModelError(string.Empty, "Something Went Wrong. Please Try Again later");
             }
+
+            //We need to reassign the employee and LeaveType to the model because it was not present in the form, so it will not be present in the model object
+            model.Employee = _mapper.Map<EmployeeListVM>(await _userManager.FindByIdAsync(model.EmployeeId));
+            model.LeaveType = _mapper.Map<LeaveTypeVM>(await _leaveTypeRepository.GetAsync(model.LeaveTypeId));
+            return View(model); //When you return the view, you have to return it with the data that was originally on the page
         }
 
         // GET: EmployeesController/Delete/5

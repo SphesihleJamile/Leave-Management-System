@@ -28,7 +28,7 @@ namespace LeaveManagement.Web.Repositories.Concrete
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await GetByIdAsync(id);
+            var entity = await GetAsync(id);
             if (entity != null)
             {
                 _dbContext.Set<T>().Remove(entity);
@@ -38,7 +38,7 @@ namespace LeaveManagement.Web.Repositories.Concrete
 
         public async Task<bool> Exists(int id)
         {
-            var entity = await GetByIdAsync(id);
+            var entity = await GetAsync(id);
             return entity != null;
         }
 
@@ -47,7 +47,7 @@ namespace LeaveManagement.Web.Repositories.Concrete
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(int? id)
+        public async Task<T?> GetAsync(int? id)
         {
             if (id == null)
                 return null;

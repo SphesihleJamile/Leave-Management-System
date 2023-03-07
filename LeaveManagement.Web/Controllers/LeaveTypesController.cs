@@ -39,7 +39,7 @@ namespace LeaveManagement.Web.Controllers
         // GET: LeaveTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            var leaveType = await _leaveTypeRepo.GetByIdAsync(id);
+            var leaveType = await _leaveTypeRepo.GetAsync(id);
             if (leaveType == null)
             {
                 return NotFound();
@@ -73,7 +73,7 @@ namespace LeaveManagement.Web.Controllers
         // GET: LeaveTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            var leaveType = await _leaveTypeRepo.GetByIdAsync(id);
+            var leaveType = await _leaveTypeRepo.GetAsync(id);
             if (leaveType == null)
                 return NotFound();
             var leaveTypeVM = _mapper.Map<LeaveTypeVM>(leaveType);

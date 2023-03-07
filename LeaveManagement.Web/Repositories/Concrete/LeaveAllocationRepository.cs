@@ -46,11 +46,27 @@ namespace LeaveManagement.Web.Repositories.Concrete
             return employeeAllocationModel;
         }
 
+        public async Task<LeaveAllocationEditVM> GetEmployeeAllocation(int id)
+        {
+            var allocation = await _dbContext.LeaveAllocations
+                .Include(q => q.LeaveType)
+                .FirstOrDefaultAsync(q => q.Id == id);
+
+            if (allocation == null)
+                return null;
+
+            var employee = await _userManager.FindByIdAsync(allocation.EmployeeId);
+            var model = _mapper.Map<LeaveAllocationEditVM>(allocation);
+            model.Employee = _mapper.Map<EmployeeListVM>(await _userManager.FindByIdAsync(allocation.EmployeeId));
+
+            return model;
+        }
+
         public async Task LeaveAllocation(int leaveTypeId)
         {
             var employees = await _userManager.GetUsersInRoleAsync(Roles.User);
             var period = DateTime.Now.Year;
-            var leaveType = await _leaveTypeRepository.GetByIdAsync(leaveTypeId);
+            var leaveType = await _leaveTypeRepository.GetAsync(leaveTypeId);
 
             var allocations = new List<LeaveAllocation>();
 
