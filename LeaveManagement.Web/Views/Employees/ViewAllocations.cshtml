@@ -1,7 +1,7 @@
 ﻿@model LeaveManagement.Web.Models.EmployeeAllocationVM
 
 @{
-    ViewData["Title"] = "ViewAllocations";
+    ViewData["Title"] = "View Allocations";
 }
 
 <h1>Allocations For @Model.Firstname @Model.Lastname</h1>
@@ -46,33 +46,44 @@
         <h4>Leave Allocations</h4>
     </div>
     <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col"><h6>Leave Name</h6></div>
+                <div class="col"><h6>Original Allocation</h6></div>
+                <div class="col"><h6>Current Allocation</h6></div>
+                <div class="col"><h6>Action</h6></div>
+            </div>
+        </li>
         @foreach(var allocation in Model.LeaveAllocations)
         {
             <li class="list-group-item">
-                <div class="row">
-                    <div class="col-md-4">
-                        @allocation.LeaveType.Name
-                    </div>
-                    <div class="col-md-5">
+            <div class="row">
+                <div class="col">
+                        <h6>@allocation.LeaveType?.Name</h6>
+                </div>
+                <div class="col">
                         <button type="button" class="btn btn-primary">
                             Allocated Days <span class="badge text-bg-secondary">@allocation.LeaveType.DefaultDays</span>
                         </button>
+                </div>
+                <div class="col">
                         <button type="button" class="btn btn-warning">
                             Remaining Days <span class="badge text-bg-secondary">@allocation.NumberOfDays</span>
                         </button>
-                    </div>
-                    <div class="col-md-3">
+                </div>
+                <div class="col">
                         <a asp-action="EditAllocation" asp-route-id="@allocation.Id" class="btn btn-success">
                             <img src="~/lib/bootstrap-icons/icons/pen.svg" /> &nbsp; Edit Allocation
                         </a>
-                    </div>
                 </div>
-            </li>
+            </div>
+        </li>
         }
     </ul>
 </div>
 
 <br />
+
 <div>
     <a asp-action="Index" class="btn btn-secondary btn-lg">
         <img src="~/lib/bootstrap-icons/icons/arrow-left-circle.svg" /> &nbsp; Back to List

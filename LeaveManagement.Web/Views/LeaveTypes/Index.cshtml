@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<LeaveManagement.Web.Models.LeaveTypeVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Leave Types";
 }
 
 <h1>Leave Types</h1>
@@ -11,6 +11,7 @@
         <img src="~/lib/bootstrap-icons/icons/pencil-square.svg" /> &nbsp; New Leave Type
     </a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -65,8 +66,6 @@
     <script>
 
         $(function(){
-
-            $('.table').DataTable();
 
             $('.deleteBtn').click(function(e){
                 swal({
