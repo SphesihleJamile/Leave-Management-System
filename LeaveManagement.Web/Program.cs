@@ -21,6 +21,8 @@ builder.Services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireC
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpContextAccessor(); //this provides you withthe ability to access the HttpContext from other non-controller classes
+
 /****
  * localhost                        : this is the parameter for the server. Where are using localhost because Papercut SMTP only works locally. This will be changed for production
  * 25                               : the default SMTP port
@@ -31,6 +33,7 @@ builder.Services.AddControllersWithViews();
  */
 builder.Services.AddTransient<IEmailSender>(sender => new EmailSender("localhost", 25, "no-reply@leavemanagement.com"));
 
+builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequstRepository>();
 builder.Services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
