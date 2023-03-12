@@ -48,7 +48,7 @@
 <br />
 
 <div style="border-width:1px; border-color:lightgray; border-style:solid; border-radius:10px; padding:15px">
-    <h2>Current Requests</h2>
+    <h2 class="text-center">Current Requests</h2>
     <br />
     <table class="table">
         <thead>
@@ -58,6 +58,9 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.LeaveRequests[0].EndDate)
+                </th>
+                <th>
+                    No. Of Days
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.LeaveRequests[0].LeaveType)
@@ -74,43 +77,164 @@
         <tbody>
             @foreach (var item in Model.LeaveRequests)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LeaveType.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateRequested)
-                    </td>
-                    <td>
-                        @if (item.Cancelled == true)
-                        {
-                            <button type="button" class="btn btn-outline-secondary">Cancelled</button>
-                        }
-                        else if (item.Approved == null)
-                        {
-                            <button type="button" class="btn btn-outline-warning">Pending</button>
-                        }
-                        else if (item.Approved == true)
-                        {
-                            <button type="button" class="btn btn-outline-success">Approved</button>
-                        }
-                        else
-                        {
-                            <button type="button" class="btn btn-outline-danger">Rejected</button>
-                        }
-                        @*@Html.DisplayFor(modelItem => item.Approved)*@
-                    </td>
-                    <td>
-                        <a class="btn btn-danger btn-sm" asp-action="Cancel" asp-route-id="@item.Id">Cancel Request</a>
-                    </td>
-                </tr>
+                if(item.Cancelled == false && item.Approved == null)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @{
+                                var numberOfDays = (int)(item.EndDate - item.StartDate).Value.TotalDays;
+                                <p>@numberOfDays</p>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateRequested)
+                        </td>
+                        <td>
+                            @if (item.Cancelled == true)
+                            {
+                                <button type="button" class="btn btn-outline-secondary">Cancelled</button>
+                            }
+                            else if (item.Approved == null)
+                            {
+                                <button type="button" class="btn btn-outline-warning">Pending</button>
+                            }
+                            else if (item.Approved == true)
+                            {
+                                <button type="button" class="btn btn-outline-success">Approved</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-outline-danger">Rejected</button>
+                            }
+                            @*@Html.DisplayFor(modelItem => item.Approved)*@
+                        </td>
+                        <td>
+                            @if (!item.Cancelled && item.Approved == null)
+                            {
+                                <button class="btn btn-danger btn-sm cancelBtn" data-id="@item.Id" type="button">
+                                    <img src="~/lib/bootstrap-icons/icons/dash-circle.svg" /> &nbsp; Cancel
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
 </div>
+
+<br />
+<br />
+
+<div style="border-width:1px; border-color:lightgray; border-style:solid; border-radius:10px; padding:15px">
+    <h2 class="text-center">History</h2>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.LeaveRequests[0].StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LeaveRequests[0].EndDate)
+                </th>
+                <th>
+                    No. Of Days
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LeaveRequests[0].LeaveType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LeaveRequests[0].DateRequested)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LeaveRequests[0].Approved)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.LeaveRequests)
+            {
+                if(item.Cancelled == true || item.Approved != null)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @{
+                                var numberOfDays = (int)(item.EndDate - item.StartDate).Value.TotalDays;
+                                <p>@numberOfDays</p>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateRequested)
+                        </td>
+                        <td>
+                            @if (item.Cancelled == true)
+                            {
+                                <button type="button" class="btn btn-outline-secondary">Cancelled</button>
+                            }
+                            else if (item.Approved == null)
+                            {
+                                <button type="button" class="btn btn-outline-warning">Pending</button>
+                            }
+                            else if (item.Approved == true)
+                            {
+                                <button type="button" class="btn btn-outline-success">Approved</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-outline-danger">Rejected</button>
+                            }
+                            @*@Html.DisplayFor(modelItem => item.Approved)*@
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<form id="cancelForm" asp-action="Cancel">
+    <input type="hidden" id="leaveAllocationId" name="Id" />
+    <input name="approved" value="false" type="hidden"/>
+</form>
+
+@section Scripts{
+    <script>
+        $(function(){
+            $('.cancelBtn').click(function(e){
+                swal({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to cancel this leave request?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if(confirm){
+                        var btn = $(this);
+                        var id = btn.data("id");
+                        $('#leaveAllocationId').val(id);
+                        $('#cancelForm').submit();
+                    }
+                });
+            });
+        });
+    </script>
+}
