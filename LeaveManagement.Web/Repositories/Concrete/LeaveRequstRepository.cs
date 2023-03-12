@@ -3,6 +3,7 @@ using LeaveManagement.Web.Data;
 using LeaveManagement.Web.Models;
 using LeaveManagement.Web.Repositories.Abstract;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagement.Web.Repositories.Concrete
@@ -26,6 +27,22 @@ namespace LeaveManagement.Web.Repositories.Concrete
             this._httpContextAccessor = httpContextAccessor;
             this._leaveAllocationRepository = leaveAllocationRepository;
             this._userManager = userManager;
+        }
+
+        public async Task ChangeApprovalStatus(int leaveRequestId, bool approved)
+        {
+            var leaveRequest = await GetAsync(leaveRequestId);
+            leaveRequest.Approved = approved;
+
+            if(approved)
+            {
+                var allocation = await _leaveAllocationRepository.GetEmployeeAllocation(leaveRequest.RequestingEmployeeId, leaveRequest.LeaveTypeId);
+                int daysRequests = (int)(leaveRequest.EndDate - leaveRequest.EndDate).TotalDays;
+                allocation.NumberOfDays -= daysRequests;
+                await _leaveAllocationRepository.UpdateAsync(allocation);
+            }
+
+            await UpdateAsync(leaveRequest);
         }
 
         public async Task CreateLeaveRequest(LeaveRequestCreateVM model)
@@ -60,6 +77,19 @@ namespace LeaveManagement.Web.Repositories.Concrete
         public async Task<List<LeaveRequest>> GetAllAsync(string employeeId)
         {
             return await _dbContext.LeaveRequests.Where(q => q.RequestingEmployeeId == employeeId).ToListAsync();
+        }
+
+        public async Task<LeaveRequestVM?> GetLeaveRequestAsync(int? id)
+        {
+            var leaveRequest = await _dbContext.LeaveRequests
+                                    .Include(q => q.LeaveType)
+                                    .FirstOrDefaultAsync(q => q.Id == id);
+
+            if (leaveRequest == null) return null;
+
+            var model = _mapper.Map<LeaveRequestVM>(leaveRequest);
+            model.Employee = _mapper.Map<EmployeeListVM>(await _userManager.FindByIdAsync(leaveRequest?.RequestingEmployeeId));
+            return model;
         }
 
         public async Task<EmployeeLeaveRequestViewVM> GetMyLeaveDetails()
