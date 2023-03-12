@@ -11,8 +11,10 @@ namespace LeaveManagement.Web.Models
         [Display(Name = "Date Requested")]
         public DateTime DateRequested { get; set; }
         [Display(Name = "Leave Type")]
-        public LeaveType LeaveType { get; set; }
+        public LeaveTypeVM LeaveType { get; set; }
         public bool? Approved { get; set; } //When Approved is null, then it means that this request is pending approval
         public bool Cancelled { get; set; }
+        public string? RequestingEmployeeId { get; set; }
+        public EmployeeListVM Employee { get; set; }
     }
 }
