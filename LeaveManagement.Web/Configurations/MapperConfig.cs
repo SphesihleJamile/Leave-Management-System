@@ -20,6 +20,8 @@ namespace LeaveManagement.Web.Configurations
                 .ReverseMap();
             CreateMap<LeaveRequest, LeaveRequestCreateVM>()
                 .ReverseMap();
+            CreateMap<LeaveRequest, LeaveRequestVM>()
+                .ReverseMap();
         }
     }
 }

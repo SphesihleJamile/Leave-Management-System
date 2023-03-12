@@ -1,0 +1,18 @@
+﻿using LeaveManagement.Web.Data;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace LeaveManagement.Web.Models
+{
+    public class LeaveRequestVM : LeaveRequestCreateVM
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "Date Requested")]
+        public DateTime DateRequested { get; set; }
+        [Display(Name = "Leave Type")]
+        public LeaveType LeaveType { get; set; }
+        public bool? Approved { get; set; } //When Approved is null, then it means that this request is pending approval
+        public bool Cancelled { get; set; }
+    }
+}
